@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.46" r="0.5">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.22"/>
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0" x2="1">
+      <stop offset="0" stop-color="#4a4a47"/>
+      <stop offset="0.42" stop-color="#f4f3ee"/>
+      <stop offset="1" stop-color="#2e2e2c"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blur" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="22"/></filter>
+  </defs>
+  <rect width="512" height="512" fill="#070707"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+  <!-- horizon + light spill -->
+  <rect x="0" y="372" width="512" height="140" fill="#040404"/>
+  <polygon points="222,372 290,372 400,512 112,512" fill="url(#floor)"/>
+  <!-- monolith -->
+  <rect x="222" y="120" width="68" height="252" fill="#fff" opacity="0.45" filter="url(#blur)"/>
+  <rect x="222" y="120" width="68" height="252" fill="url(#metal)"/>
+  <rect x="222" y="374" width="68" height="70" fill="url(#metal)" opacity="0.10"/>
+  <!-- the period -->
+  <rect x="304" y="344" width="28" height="28" fill="#c6ff3d"/>
+</svg>

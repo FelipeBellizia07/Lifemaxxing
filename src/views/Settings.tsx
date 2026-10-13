@@ -6,6 +6,7 @@ import { deletePhoto, wipeAll } from '../lib/db.ts'
 import { exportBackup, restoreBackup, validateBackup, type Backup } from '../lib/backup.ts'
 import { Btn, Chip, Confirm, Field, Panel, Photo, PhotoPicker } from '../components/ui.tsx'
 import { ModuleHeader } from '../components/Module.tsx'
+import { SyncPanel } from '../components/SyncPanel.tsx'
 import { ACCENTS, GOAL_OPTIONS, METRIC_GROUPS } from './Onboarding.tsx'
 
 export function Settings() {
@@ -38,6 +39,7 @@ export function Settings() {
     <>
       <ModuleHeader scene="monolith" code="09" title="Settings" tagline="Your system, your rules. All data stays on this device." />
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <SyncPanel />
         <Panel kicker="Identity" title="Profile">
           <div className="space-y-5">
             <Field label="Name"><input className="field" value={p.name} onChange={(e) => set({ name: e.target.value })} maxLength={40} /></Field>

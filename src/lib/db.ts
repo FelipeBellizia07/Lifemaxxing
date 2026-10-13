@@ -48,6 +48,9 @@ export function migrate(raw: any): State {
 export const loadState = async () => migrate(await tx<any>('kv', 'readonly', (s) => s.get('state')))
 export const saveState = (state: State) => tx('kv', 'readwrite', (s) => s.put(state, 'state'))
 
+export const kvGet = <T,>(key: string) => tx<T | undefined>('kv', 'readonly', (s) => s.get(key))
+export const kvSet = (key: string, v: unknown) => tx('kv', 'readwrite', (s) => s.put(v, key))
+
 export const putPhoto = (id: string, blob: Blob) => tx('photos', 'readwrite', (s) => s.put(blob, id))
 export const getPhoto = (id: string) => tx<Blob | undefined>('photos', 'readonly', (s) => s.get(id))
 export const deletePhoto = (id: string) => tx('photos', 'readwrite', (s) => s.delete(id))

@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // Fixed port: IndexedDB is scoped per origin, so a stable port keeps your data across restarts.
 export default defineConfig({
+  base: './', // relative paths: the build runs from any host or subfolder (hash routing)
   plugins: [react(), tailwindcss()],
   server: { port: 5173, strictPort: true },
   preview: { port: 5173, strictPort: true },

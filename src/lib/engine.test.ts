@@ -42,3 +42,22 @@ test('strategy returns at most three, ranked, with reasons', () => {
   assert.ok(!r.some((x) => x.taskId === 'snoozed'))
   assert.ok(recommend({ state: s, today: '2026-10-12', energy: 'low', minutes: 60 }).length <= 2)
 })
+
+import { mergeStates } from './merge.ts'
+
+test('three-way merge: adds union, deletes propagate, local wins conflicts', () => {
+  const w = (id: string, type = 'Push') => ({ id, date: '2026-10-10', type, durationMin: 60, notes: '' })
+  const base: State = { ...emptyState(), workouts: [w('a'), w('b'), w('c')] }
+  const pc: State = { ...emptyState(), workouts: [w('a', 'Legs'), w('b'), w('c'), w('pc')] } // edit a, add pc
+  const phone: State = { ...emptyState(), workouts: [w('a', 'Pull'), w('c', 'Cardio'), w('ph')] } // edit a, delete b, edit c, add ph
+  const m = mergeStates(base, pc, phone)
+  const byId = Object.fromEntries(m.workouts.map((x) => [x.id, x.type]))
+  assert.deepEqual(Object.keys(byId).sort(), ['a', 'c', 'pc', 'ph'], 'b deleted on phone stays deleted')
+  assert.equal(byId.a, 'Legs', 'conflict → local wins')
+  assert.equal(byId.c, 'Cardio', 'remote-only edit is taken')
+  // first sync (no base): pure union
+  assert.equal(mergeStates(null, pc, phone).workouts.length, 5)
+  // deleting a record the other side edited keeps the edit
+  const m2 = mergeStates(base, { ...emptyState(), workouts: [w('a'), w('c')] }, { ...emptyState(), workouts: [w('a'), w('b', 'Legs'), w('c')] })
+  assert.ok(m2.workouts.some((x) => x.id === 'b'), 'edit beats delete')
+})

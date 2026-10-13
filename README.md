@@ -17,6 +17,17 @@ Production build: `npm run build && npm run preview`.
 
 > The port is pinned to **5173**. IndexedDB is scoped per origin, so a changed port means an empty vault. Use **Settings → Export backup** regularly.
 
+## Phone app + PC ⇄ phone sync
+
+**Sync:** open LifeMaxxing on both devices, go to **Settings → Sync devices**, tap **Show code** on one and type the code on the other. Records and photos merge both ways. The merge is three-way per record, so a deletion on one device propagates, conflicting edits keep the version on the device showing the code, and an edit beats a delete. The free PeerJS broker only introduces the devices. Data travels directly between them over encrypted WebRTC and is never stored in a cloud. Both devices need internet for the handshake, and the same Wi-Fi works best. Optionally self-host the broker with `VITE_PEER_HOST`/`VITE_PEER_PORT` at build time.
+
+**Install on the phone (PWA):** the app has to be served over HTTPS to be installable. Pick one free option:
+
+1. **GitHub Pages** (automatic): make the repo public, then Settings → Pages → Source: *GitHub Actions*. Every push deploys via `.github/workflows/pages.yml`. Open the Pages URL on the phone → Chrome menu → *Install app*. Private repos need a paid GitHub plan for Pages.
+2. **Netlify Drop / Cloudflare Pages**: run `npm run build` and upload the `dist/` folder.
+
+The build uses relative paths, so it works from any host or subfolder. Once installed, it runs full-screen with its own icon and works offline. Each device keeps its own local vault, so use Sync to keep them identical.
+
 ## What's inside
 
 | Screen | Purpose |
